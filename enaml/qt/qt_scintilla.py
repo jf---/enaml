@@ -5,11 +5,6 @@
 #
 # The full license is in the file COPYING.txt, distributed with this software.
 #------------------------------------------------------------------------------
-from . import QT_API
-if QT_API != 'pyqt':
-    msg = 'the Qt Scintilla widget is only available when using PyQt'
-    raise ImportError(msg)
-
 import logging
 import sys
 import weakref
@@ -20,9 +15,8 @@ from enaml.colors import parse_color
 from enaml.fonts import parse_font
 from enaml.scintilla.scintilla import ProxyScintilla
 
-from PyQt4 import Qsci
-
 from .QtGui import QColor, QFont
+from .QtSci import Qsci
 
 from .q_resource_helpers import QColor_from_Color, QFont_from_Font
 from .qt_control import QtControl

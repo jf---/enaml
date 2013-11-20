@@ -10,5 +10,7 @@ from . import QT_API
 
 if QT_API == 'pyqt':
     from PyQt4.QtScript import *
+elif QT_API == 'pyqt5':
+    raise ImportError("QtScript not supported in PyQt5")
 else:
     from PySide.QtScript import *

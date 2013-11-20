@@ -5,13 +5,7 @@
 #
 # The full license is in the file COPYING.txt, distributed with this software.
 #------------------------------------------------------------------------------
-from . import QT_API
-if QT_API != 'pyqt':
-    msg = 'the Qt Scintilla widget is only available when using PyQt'
-    raise ImportError(msg)
-
-from PyQt4 import Qsci
-
+from .QtSci import Qsci
 
 
 class PythonLexer(Qsci.QsciLexerPython):

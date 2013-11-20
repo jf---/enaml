@@ -8,7 +8,7 @@
 import os
 
 
-def prepare_pyqt():
+def prepare_pyqt4():
     import sip
     sip.setapi('QDate', 2)
     sip.setapi('QDateTime', 2)
@@ -25,16 +25,20 @@ QT_API = os.environ.get('QT_API', '').lower().strip()
 if not QT_API:
     try:
         import PyQt4
-        prepare_pyqt()
+        prepare_pyqt4()
         QT_API = os.environ['QT_API'] = 'pyqt'
     except ImportError:
         try:
-            import PySide
-            QT_API = os.environ['QT_API'] = 'pyside'
+            import PyQt5
+            QT_API = os.environ['QT_API'] = 'pyqt5'
         except ImportError:
-            raise ImportError('Cannot import PyQt4 or PySide')
+            try:
+                import PySide
+                QT_API = os.environ['QT_API'] = 'pyside'
+            except ImportError:
+                raise ImportError('Cannot import PyQt4, PyQt5, or PySide')
 elif QT_API == 'pyqt':
-    prepare_pyqt()
-elif QT_API != 'pyside':
-    msg = "Invalid Qt API %r, valid values are: 'pyqt' or 'pyside'"
+    prepare_pyqt4()
+elif QT_API not in ('pyqt5', 'pyside'):
+    msg = "Invalid Qt API %r, valid values are: 'pyqt', 'pyqt5', or 'pyside'"
     raise ValueError(msg % QT_API)

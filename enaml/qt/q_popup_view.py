@@ -7,13 +7,14 @@
 #------------------------------------------------------------------------------
 from atom.api import Atom, Bool, Typed, Float, Int, IntEnum
 
+from . import QT_API
 from .QtCore import (
     Qt, QPoint, QPointF, QSize, QRect,QMargins, QPropertyAnimation, QTimer,
     QEvent, Signal
 )
 from .QtGui import (
     QApplication, QWidget, QLayout, QPainter, QPainterPath, QRegion, QPen,
-    QCursor
+    QCursor, QTransform
 )
 
 from .q_single_widget_layout import QSingleWidgetLayout
@@ -994,7 +995,10 @@ class QPopupView(QWidget):
 
         # Store the path for painting and update the widget mask.
         state.path = path
-        mask = QRegion(path.toFillPolygon().toPolygon())
+        if QT_API == 'pyqt5':
+            mask = QRegion(path.toFillPolygon(QTransform()).toPolygon())
+        else:
+            mask = QRegion(path.toFillPolygon().toPolygon())
         self.setMask(mask)
 
         # Set the geometry of the view and update. The update is needed

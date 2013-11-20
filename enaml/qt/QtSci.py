@@ -6,11 +6,11 @@
 # The full license is in the file COPYING.txt, distributed with this software.
 #------------------------------------------------------------------------------
 from . import QT_API
-
+if QT_API not in ('pyqt', 'pyqt5'):
+    msg = 'the Qt Scintilla widget is only available when using PyQt'
+    raise ImportError(msg)
 
 if QT_API == 'pyqt':
-    from PyQt4.QtOpenGL import *
-elif QT_API == 'pyqt5':
-    from PyQt5.QtOpenGL import *
+    from PyQt4 import Qsci
 else:
-    from PySide.QtOpenGL import *
+    from PyQt5 import Qsci

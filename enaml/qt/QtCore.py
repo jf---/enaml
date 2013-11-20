@@ -5,11 +5,15 @@
 #
 # The full license is in the file COPYING.txt, distributed with this software.
 #------------------------------------------------------------------------------
-from . import QT_API 
+from . import QT_API
 
 
-if QT_API == 'pyqt':
-    from PyQt4.QtCore import *
+if QT_API == 'pyqt' or QT_API == 'pyqt5':
+    if QT_API == 'pyqt':
+        from PyQt4.QtCore import *
+    else:
+        from PyQt5.QtCore import *
+        print 'using Qt5'
     Property = pyqtProperty
     Signal = pyqtSignal
     Slot = pyqtSlot

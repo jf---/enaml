@@ -7,10 +7,17 @@
 #------------------------------------------------------------------------------
 from weakref import ref
 
+from enaml.qt import QT_API
+
+if QT_API == 'pyqt5':
+    from enaml.qt.QtGui import QStyleOptionTab as QStyleOptionTabV3
+else:
+    from enaml.qt.QtGui import QStyleOptionTabV3
+
 from enaml.qt.QtCore import Qt, QPoint, QSize, QMetaObject, QEvent
 from enaml.qt.QtGui import (
     QApplication, QTabBar, QTabWidget, QMouseEvent, QResizeEvent, QStyle,
-    QCursor, QStylePainter, QStyleOptionTabV3, QPixmap, QPainter
+    QCursor, QStylePainter, QPixmap, QPainter
 )
 
 from .event_types import QDockItemEvent, DockTabSelected
