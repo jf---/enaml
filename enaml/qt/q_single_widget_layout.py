@@ -5,8 +5,9 @@
 #
 # The full license is in the file COPYING.txt, distributed with this software.
 #------------------------------------------------------------------------------
+from . import QT_API
 from .QtCore import QSize
-from .QtGui import QLayout, QWidgetItem
+from .QtGui import QLayout, QWidget, QWidgetItem
 
 
 class QSingleWidgetItem(QWidgetItem):
@@ -44,6 +45,9 @@ class QSingleWidgetLayout(QLayout):
     """
     #: The initial value of the internal widget item.
     _item = None
+
+    #: The initial value of the reset on invalidate flag.
+    _reset_minmax = False
 
     def __init__(self, parent=None):
         """ Initialize a QSingleWidgetLayout.
@@ -148,6 +152,34 @@ class QSingleWidgetLayout(QLayout):
             # A double free occurs once the Python item falls out of scope.
             # To avoid this, this method always returns None and the item
             # cleanup is performed by Python, which owns the cpp pointer.
+
+    if QT_API == 'pyqt5':
+
+        def setSizeConstraint(self, constraint):
+            """ Set the size constraint of the layout.
+
+            This is reimplemented for Qt5 to set an internal flag
+            which controls the behavior of a workaround.
+
+            """
+            self._reset_minmax = constraint == QLayout.SetMinAndMaxSize
+            super(QSingleWidgetLayout, self).setSizeConstraint(constraint)
+
+        def invalidate(self):
+            """ Reset the min/max widget sizes on Qt5.
+
+            This works around a warning emitted by Qt5 if the size
+            constraints are set to SetMinAndMaxSize and new min size
+            is greater than the old max size, and vice-versa.
+
+            """
+            if self._reset_minmax:
+                p = self.parentWidget()
+                if p is not None:
+                    # Bypass any Python method overrides
+                    QWidget.setMinimumSize(p, 0, 0)
+                    QWidget.setMaximumSize(p, 16777215, 16777215)
+            super(QSingleWidgetLayout, self).invalidate()
 
     def sizeHint(self):
         """ A virtual method implementation which returns the size hint
