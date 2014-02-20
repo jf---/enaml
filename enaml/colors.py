@@ -342,6 +342,30 @@ def parse_color(color):
             return _COLOR_PARSERS[key](color)
 
 
+def color_string(color):
+    """ Convert an Enaml color object into a CSS color string.
+
+    Parameters
+    ----------
+    color : Color or None
+        The Enaml Color object of interest.
+
+    Returns
+    -------
+    result : unicode
+        The unicode string for the color object. If the color object is
+        None, this will be an empty string.
+
+    """
+    if color is None:
+        return u''
+    r = color.red
+    g = color.green
+    b = color.blue
+    a = color.alpha / 255.0
+    return u'rgba(%d, %d, %d, %.3f)' % (r, g, b, a)
+
+
 def coerce_color(color):
     """ The coercing function for the ColorMember.
 

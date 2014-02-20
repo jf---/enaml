@@ -170,6 +170,25 @@ def parse_font(font):
     return Font(family, size, weight, style, variant)
 
 
+def font_string(font):
+    """ Convert an Enaml font object into a CSS font string.
+
+    Parameters
+    ----------
+    font : Font or None
+        The Enaml Font object of interest.
+
+    Returns
+    -------
+    result : unicode
+        The unicode string for the font object. If the font object is
+        None, this will be an empty string.
+
+    """
+    # TODO implement me
+    return u''
+
+
 def coerce_font(font):
     """ The coercing function for the FontMember.
 
